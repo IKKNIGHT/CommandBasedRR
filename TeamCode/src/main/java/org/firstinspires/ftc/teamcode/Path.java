@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 
 import org.firstinspires.ftc.teamcode.utils.Trajectory;
 
+import java.util.Arrays;
+
 public class Path {
+
 
     public void followTrajectory(Trajectory traj,MecanumDrive drive){
         drive.updatePoseEstimate();
@@ -18,5 +22,6 @@ public class Path {
             drive.updatePoseEstimate();
         }
     }
+
 
 }

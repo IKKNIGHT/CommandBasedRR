@@ -27,6 +27,7 @@ public class Trajectory {
         // this checks for x y and thata are number lists arent empty and arent bigger than each other...
     }
 
+
     public List<Object> getX() {
         return myX;
     }
@@ -45,4 +46,28 @@ public class Trajectory {
             myTheta.set(i,-1*(double)myTheta.get(i));
         }
     }
+    public void addPoint(double x,double y,double theta){
+        myX.add(x);
+        myY.add(y);
+        myTheta.add(theta);
+    }
+    public String toString(){
+        String x ="[";
+        String y ="[";
+        String theta ="[";
+        for (int i =0;i<myX.size();i++){
+            x = x+","+myX.get(i);
+        }
+        for (int i =0;i<myY.size();i++){
+            y = y+","+myY.get(i);
+        }
+        for (int i =0;i<myTheta.size();i++){
+            theta = theta+","+myTheta.get(i);
+        }
+        x=x+"]";
+        y=y+"]";
+        theta=theta+"]";
+        return "["+x+" , "+y+" , "+theta+"]";
+    }
+
 }
