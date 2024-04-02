@@ -31,8 +31,8 @@ public class Trajectory {
         myTheta = theta;
         startpose = drive.pose;
         startV = new Vector2d(drive.pose.position.x,drive.pose.position.y);
-        startheading = startpose.heading.imag;
-        // this checks for x y and thata are number lists arent empty and arent bigger than each other...
+        startheading = startpose.heading.toDouble();
+        // this checks for x y and theta are number lists arent empty and arent bigger than each other...
     }
 
 

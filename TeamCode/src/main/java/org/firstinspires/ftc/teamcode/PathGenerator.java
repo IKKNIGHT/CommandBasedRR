@@ -17,7 +17,7 @@ public class PathGenerator extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        Trajectory trajectory = new Trajectory(Arrays.asList(drive.pose.position.x),Arrays.asList(drive.pose.position.y),Arrays.asList(drive.pose.heading.imag),drive);
+        Trajectory trajectory = new Trajectory(Arrays.asList(drive.pose.position.x),Arrays.asList(drive.pose.position.y),Arrays.asList(drive.pose.heading.toDouble()),drive);
         Path path = new Path(drive);
         FtcDashboard dashboard = FtcDashboard.getInstance();
         TelemetryPacket packet = new TelemetryPacket();
@@ -38,7 +38,7 @@ public class PathGenerator extends LinearOpMode {
                 if (gamepad1.y|gamepad2.y){
 
                    // create a waypoint
-                   trajectory.addPoint(drive.pose.position.x,drive.pose.position.y,drive.pose.heading.imag);
+                   trajectory.addPoint(drive.pose.position.x,drive.pose.position.y,drive.pose.heading.toDouble());
                 }
 
                 if(gamepad1.x|gamepad2.x){
