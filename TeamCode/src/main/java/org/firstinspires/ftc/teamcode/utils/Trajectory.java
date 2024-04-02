@@ -1,13 +1,18 @@
 package org.firstinspires.ftc.teamcode.utils;
 
-import java.io.ObjectStreamException;
-import java.util.ArrayList;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
+
+import org.firstinspires.ftc.teamcode.MecanumDrive;
+
 import java.util.List;
-import java.util.Objects;
 
 public class Trajectory {
     List<Object> myX,myY,myTheta;
-    public Trajectory(List<Object> x, List<Object>y, List<Object>theta){
+    Pose2d startpose;
+    double startheading;
+    Vector2d startV;
+    public Trajectory(List<Object> x, List<Object>y, List<Object>theta, MecanumDrive drive){
         if(x.isEmpty()|y.isEmpty()|theta.isEmpty()){
             throw new NullPointerException("X OR Y OR THETA IS EMPTY!!");
         }
@@ -24,6 +29,9 @@ public class Trajectory {
         myX = x;
         myY = y;
         myTheta = theta;
+        startpose = drive.pose;
+        startV = new Vector2d(drive.pose.position.x,drive.pose.position.y);
+        startheading = startpose.heading.imag;
         // this checks for x y and thata are number lists arent empty and arent bigger than each other...
     }
 
@@ -39,6 +47,9 @@ public class Trajectory {
     public List<Object> getTheta() {
         return myTheta;
     }
+    public Pose2d getStartPose(){return startpose;}
+    public Vector2d getStartVector(){return startV;}
+    public double getStartheading(){return startheading;}
 
     public void reflect(){
         for(int i=0;i< myY.size();i++){
@@ -52,9 +63,9 @@ public class Trajectory {
         myTheta.add(theta);
     }
     public String toString(){
-        String x ="[";
-        String y ="[";
-        String theta ="[";
+        String x ="Arrays.asList(";
+        String y ="Arrays.asList(";
+        String theta ="Arrays.asList(";
         for (int i =0;i<myX.size();i++){
             x = x+","+myX.get(i);
         }
@@ -64,9 +75,9 @@ public class Trajectory {
         for (int i =0;i<myTheta.size();i++){
             theta = theta+","+myTheta.get(i);
         }
-        x=x+"]";
-        y=y+"]";
-        theta=theta+"]";
+        x=x+")";
+        y=y+")";
+        theta=theta+")";
         return "["+x+" , "+y+" , "+theta+"]";
     }
 

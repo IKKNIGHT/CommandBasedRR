@@ -17,30 +17,47 @@ public class PathGenerator extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        Trajectory trajectory = new Trajectory(Arrays.asList(drive.pose.position.x),Arrays.asList(drive.pose.position.y),Arrays.asList(drive.pose.heading.imag));
+        Trajectory trajectory = new Trajectory(Arrays.asList(drive.pose.position.x),Arrays.asList(drive.pose.position.y),Arrays.asList(drive.pose.heading.imag),drive);
+        Path path = new Path(drive);
         FtcDashboard dashboard = FtcDashboard.getInstance();
         TelemetryPacket packet = new TelemetryPacket();
         waitForStart();
         while(opModeIsActive()){
+            telemetry.addLine("DS NOT SUPPORTED USE DASH BOARD URL : (192.168.43.1/dash)");
+            telemetry.update();
+            packet.put(trajectory.toString(),null);
             drive.updatePoseEstimate();
             packet.put("USE B TO START GENERATING" , null);
-            packet.put("X : " , drive.pose.position.x);
-            packet.put("Y : " , drive.pose.position.y);
-            packet.put("Theta : " , drive.pose.heading.imag);
+            if(gamepad1.b){
+                generating = true;
+            }
             if (generating){
+                dashboard.clearTelemetry();
+                packet.put("Y TO ADD POINT" , null);
+                packet.put("X TO STOP GENERATING" , null);
                 if (gamepad1.y|gamepad2.y){
+
                    // create a waypoint
                    trajectory.addPoint(drive.pose.position.x,drive.pose.position.y,drive.pose.heading.imag);
                 }
-                packet.put(trajectory.toString(),null);
+
                 if(gamepad1.x|gamepad2.x){
                     generating = false;
                 }
             }else {
-                if (gamepad1.a){
-
+                dashboard.clearTelemetry();
+                packet.put("B TO GO BACK AND TO START GENERATING" , null);
+                path.goToStartPose(trajectory);
+                path.followTrajectory(trajectory);
+                if(gamepad1.b){
+                    path.goToStartPose(trajectory);
+                    generating = true;
                 }
             }
+            dashboard.sendTelemetryPacket(packet);
+        }
+        if (isStopRequested()){
+            packet.put(trajectory.toString(),null);
             dashboard.sendTelemetryPacket(packet);
         }
     }

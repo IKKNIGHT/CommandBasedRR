@@ -10,14 +10,26 @@ import org.firstinspires.ftc.teamcode.utils.Trajectory;
 import java.util.Arrays;
 
 public class Path {
-
-
-    public void followTrajectory(Trajectory traj,MecanumDrive drive){
+    MecanumDrive drive;
+    public Path(MecanumDrive mecanumDrive){
+        drive = mecanumDrive;
+    }
+    public void followTrajectory(Trajectory traj){
         drive.updatePoseEstimate();
         for(int i =0;i <traj.getX().size();i++){
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                            .splineTo(new Vector2d((double)traj.getX().get(i), (double)traj.getY().get(i)), (double)traj.getTheta().get(i) + 0.00001)
+                            .strafeToLinearHeading(new Vector2d((double)traj.getX().get(i), (double)traj.getY().get(i)), (double)traj.getTheta().get(i))
+                            .build());
+            drive.updatePoseEstimate();
+        }
+    }
+    public void goToStartPose(Trajectory traj){
+        drive.updatePoseEstimate();
+        for(int i = traj.getX().size();i >=0;i--){
+            Actions.runBlocking(
+                    drive.actionBuilder(drive.pose)
+                            .strafeToLinearHeading(new Vector2d((double)traj.getX().get(i),(double)traj.getY().get(i)),(double)traj.getTheta().get(i))
                             .build());
             drive.updatePoseEstimate();
         }
